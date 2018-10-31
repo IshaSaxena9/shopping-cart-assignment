@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('./items.db',(err) => {
-  if(err)
+let db = new sqlite3.Database('./items.db', (err) => {
+  if (err)
     console.error(err.message);
   console.log('Database connection established')
 });
@@ -13,13 +13,13 @@ function createProductsTable() {
   ];
 
   let products_data = products.map((product) => `(${product.id},'${product.name}','${product.img}',${product.price},${product.quantity})`).join(',');
-  let sql = 'INSERT INTO PRODUCT_TABLE(id,name,image,unit_price,quantity) VALUES '+ products_data;
+  let sql = 'INSERT INTO PRODUCT_TABLE(id,name,image,unit_price,quantity) VALUES ' + products_data;
 
   db.run('CREATE TABLE PRODUCT_TABLE(id number,name text, image text, unit_price number, quantity number)')
-    .run(sql, products, function(err) {
-        if(err)
-            console.log(err.message);
-        console.log(`Rows inserted ${this.changes}`)
+    .run(sql, products, function (err) {
+      if (err)
+        console.log(err.message);
+      console.log(`Rows inserted ${this.changes}`)
     })
 }
 
@@ -29,24 +29,31 @@ db.serialize(() => {
 });
 
 let query = 'SELECT id,name,image,unit_price,quantity FROM PRODUCT_TABLE';
-exports.getProducts = function() {
+exports.getProducts = function () {
   return new Promise((resolve, reject) => {
-    db.all(query, [], function(err, rows) {
-        if(err) reject(err.message)
-        else {
-            resolve(rows)
-        }
+    db.all(query, [], function (err, rows) {
+      if (err) reject(err.message)
+      else {
+        resolve(rows)
+      }
     })
   })
 }
 
-exports.increaseQuantity = function(id) {
+exports.increaseQuantity = function (id) {
   let query_to_add_items = `UPDATE PRODUCT_TABLE SET quantity=quantity+1 WHERE id=${id}`;
   return new Promise((resolve, reject) => {
-    db.run(query_to_add_items, function(err) {
-      if(err) reject(err.message)
+    db.run(query_to_add_items, function (err) {
+      if (err) reject(err.message)
       else {
-        resolve(true)
+        resolve(new Promise((resolve, reject) => {
+          db.all(query, [], function (err, rows) {
+            if (err) reject(err.message)
+            else {
+              resolve(rows)
+            }
+          })
+        }))
       }
     })
   })

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+import 'font-awesome/css/font-awesome.min.css';
 
 export default class Products extends React.Component {
   constructor(props) {
@@ -19,16 +20,20 @@ export default class Products extends React.Component {
     if (this.props.data !== '')
       return (
         <div>
-          <h1 className='productHeading'>Products</h1>
-          <Link to='/cart'>
-            <button className='cart'>Cart</button>
-          </Link>
+          <header>
+            <h1 className='productHeading'>Products</h1>
+            <Link to='/cart' className='cart' >
+              <button><i className="fa fa-shopping-cart"> Cart</i></button>
+            </Link>
+          </header>
           <div className='flex-container'>
             {this.props.data.map(element =>
               <div className='card'>
-                <span>{element.name}</span>
-                <img src={element.image} />
-                <span>{element.unit_price}</span>
+                <img src={element.image} alt='not found' className='image' />
+                <div className='details'>
+                  <span>{element.name}</span>
+                  <span className='price'>Price: {element.unit_price}</span>
+                </div>
                 <br></br>
                 <button value={element.id} onClick={this.addItem} className='addButton'>Add Item</button>
               </div>)}

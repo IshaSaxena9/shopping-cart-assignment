@@ -10,4 +10,9 @@ app.get('/api', async (req,res) => {
   res.send({express: result});
 });
 
+app.get('/api/:id', async(req,res) => {
+  let result = await db.increaseQuantity(req.params.id);
+  res.send({express: result});
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

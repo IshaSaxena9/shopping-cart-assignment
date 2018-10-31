@@ -1,11 +1,13 @@
 .card {
   padding: 4%;
-  margin-top: 10%;
+  flex: 1;
+  margin: 5%;
+  background-color: rgb(214, 206, 206);
 }
 
 .cart {
-  float: right;
   margin: 2%;
+  padding-top: 10%;
 }
 
 .heading {
@@ -18,8 +20,13 @@
 }
 
 .grid-container {
+  margin-top: 3%;
   display: grid;
-  grid-template-columns: 1fr 3fr 3fr 1fr;
+  grid-template-columns: 1fr 3fr 3fr 1fr 2fr;
+}
+
+.container {
+  border: 1px solid black;
 }
 
 .fullCart {
@@ -27,7 +34,7 @@
 }
 
 .productHeading {
-  float: left;
+  text-align: center;
   padding-left: 4%;
 }
 
@@ -37,6 +44,32 @@
 
 .addButton {
   margin-top: 5%;
-  margin-left: 40%;
+  margin-left: 25%;
   padding: 2%;
+  width: 40%;
+}
+
+.placeholder {
+  color: gray;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 95% 5%;
+}
+
+.amount {
+  margin-top: 4%;
+}
+
+.price {
+  float: right;
+}
+
+.details {
+  margin-top: 5%;
+}
+
+.image {
+  margin-left: 23%;
 }

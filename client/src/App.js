@@ -14,10 +14,13 @@ class App extends Component {
     };
     this.handleAdd = this.handleAdd.bind(this);
   }
-  
+
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ response: res.express }))
+      .then(res => {
+        console.log(res, "Response");
+        this.setState({ response: res.express.map(data => data) })
+      })
       .catch(err => console.log(err));
   }
 
@@ -28,17 +31,25 @@ class App extends Component {
   }
 
   handleAdd(id) {
-    this.setState({
-      cart: [...this.state.cart, this.state.response[parseInt(id)-1] ]
-    })
+    fetch(`/api/${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ response: res.express.map(data => data) })
+        this.state.cart[parseInt(id) - 1] = this.state.response[parseInt(id) - 1];
+        return 1;
+      })
+      .catch(err => console.log(err));
+    // this.setState({
+    //   cart: [...this.state.cart, this.state.response[parseInt(id)-1] ]
+    // })
   }
 
   render() {
-      return (
-        <Router>
-          <AppRoutes data={this.state.response} cart={this.state.cart} handleAdd={this.handleAdd} />
-        </Router>
-      );
+    return (
+      <Router>
+        <AppRoutes data={this.state.response} cart={this.state.cart} handleAdd={this.handleAdd} />
+      </Router>
+    );
   }
 }
 
