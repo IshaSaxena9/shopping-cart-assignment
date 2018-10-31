@@ -1,0 +1,1 @@
+Install the required dependencies by running npm install in the root directory as well as the client directory.
